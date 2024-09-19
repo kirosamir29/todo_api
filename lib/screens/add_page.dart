@@ -9,7 +9,6 @@ class AddTodoPage extends StatefulWidget {
   const AddTodoPage({
     super.key,
     this.todo,
-    // comment
   });
 
   @override
