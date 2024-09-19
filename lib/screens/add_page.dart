@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:todo/services/todo_service.dart';
+
+import '../utils/snack_helper.dart';
 
 class AddTodoPage extends StatefulWidget {
   final Map? todo;
@@ -80,70 +83,39 @@ class _AddTodoPageState extends State<AddTodoPage> {
       return;
     }
     final id = todo["_id"];
-    final title = titleController.text;
-    final description = descriptionController.text;
-    final body = {
-      "title": title,
-      "description": description,
-      "is_completed": false,
-    };
     // submit updated data
-    final url = "https://api.nstack.in/v1/todos/$id";
-    final uri = Uri.parse(url);
-    final response = await http.put(
-      uri,
-      body: jsonEncode(body),
-      headers: {'Content-Type': 'application/json'},
-    );
-
+    final isSuccess = await TodoService.updateTodo(id, body);
     //show success message
-    if (response.statusCode == 200) {
-      showSuccessMessage("Update Success");
+    if (isSuccess) {
+      showSuccessMessage(context,message:"Update Success");
     } else {
-      showErrorMessage("Update Failed");
+      showErrorMessage(context,message:"Update Failed");
     }
   }
 
   Future<void> submitData() async {
-    // get data from form
-    final title = titleController.text;
-    final description = descriptionController.text;
-    final body = {
-      "title": title,
-      "description": description,
-      "is_completed": false,
-    };
     //submit data to server
-    final url = "https://api.nstack.in/v1/todos";
-    final uri = Uri.parse(url);
-    final response = await http.post(
-      uri,
-      body: jsonEncode(body),
-      headers: {'Content-Type': 'application/json'},
-    );
+    final isSuccess = await TodoService.addTodo(body);
     //show success or fail message
-    if (response.statusCode == 201) {
+    if (isSuccess) {
       titleController.text = "";
       descriptionController.text = "";
-      showSuccessMessage("Creation Success");
+      showSuccessMessage(context,message:"Creation Success");
     } else {
-      showErrorMessage("Creation Failed");
+      showErrorMessage(context,message:"Creation Failed");
     }
   }
 
-  void showSuccessMessage(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.green,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  // get data from form
+  Map get body {final title = titleController.text;
+  final description = descriptionController.text;
+  return {
+    "title": title,
+    "description": description,
+    "is_completed": false,
+  };
   }
 
-  void showErrorMessage(String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 }
+
+
