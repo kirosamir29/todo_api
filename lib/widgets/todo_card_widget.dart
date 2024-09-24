@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-class TodoCard extends StatelessWidget {
+class TodoCardWidget extends StatelessWidget {
   final int index;
   final Map item;
-  final Function (Map) navigateEdit;
-  final Function (String) deleteById;
+  final Function(Map) navigationEditCallback;
+  final Function(String) deleteById;
 
-  const TodoCard({
+  const TodoCardWidget({
     super.key,
     required this.index,
     required this.item,
-    required this.navigateEdit,
+    required this.navigationEditCallback,
     required this.deleteById,
   });
 
   @override
   Widget build(BuildContext context) {
-    final id = item['_id']as String;
+    final id = item['_id'] as String;
     return Card(
       child: ListTile(
         leading: CircleAvatar(
@@ -27,25 +27,18 @@ class TodoCard extends StatelessWidget {
         trailing: PopupMenuButton(onSelected: (value) {
           if (value == "edit") {
             // open Edit Page
-            navigateEdit(item);
+            navigationEditCallback(item);
           } else if (value == "delete") {
             // delete item
             deleteById(id);
           }
         }, itemBuilder: (context) {
-          return [
-            PopupMenuItem(
-              child: Text("Edit"),
-              value: "edit",
-            ),
-            PopupMenuItem(
-              child: Text("Delete"),
-              value: "delete",
-            ),
+          return const [
+            PopupMenuItem(value: "edit", child: Text("Edit")),
+            PopupMenuItem(value: "delete", child: Text("Delete"))
           ];
         }),
       ),
     );
-    ;
   }
 }

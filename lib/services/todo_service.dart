@@ -12,11 +12,11 @@ class TodoService {
   }
 
   static Future<List?> fetchTodo() async {
-    final url = "https://api.nstack.in/v1/todos?page=1&limit=20";
+    const url = "https://api.nstack.in/v1/todos?page=1&limit=20";
     final uri = Uri.parse(url);
     final response = await http.get(uri);
     if (response.statusCode == 200) {
-      final json = jsonDecode(response.body) as Map;
+      final json = jsonDecode(response.body) as Map;         //
       final result = json['items'] as List;
       return result;
     } else {
@@ -30,13 +30,13 @@ class TodoService {
     final response = await http.put(
       uri,
       body: jsonEncode(body),
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type': 'application/json'},           //
     );
     return response.statusCode == 200;
   }
 
   static Future <bool> addTodo(Map body)async{
-    final url = "https://api.nstack.in/v1/todos/";
+    const url = "https://api.nstack.in/v1/todos/";
     final uri = Uri.parse(url);
     final response = await http.post(
       uri,
@@ -44,6 +44,5 @@ class TodoService {
       headers: {'Content-Type': 'application/json'},
     );
     return response.statusCode==201;
-
   }
 }

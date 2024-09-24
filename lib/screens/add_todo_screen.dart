@@ -1,24 +1,21 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:todo/services/todo_service.dart';
-
 import '../utils/snack_helper.dart';
 
-class AddTodoPage extends StatefulWidget {
+class AddTodoScreen extends StatefulWidget {
   final Map? todo;
 
-  const AddTodoPage({
+
+  const AddTodoScreen({
     super.key,
     this.todo,
   });
 
   @override
-  State<AddTodoPage> createState() => _AddTodoPageState();
+  State<AddTodoScreen> createState() => _AddTodoScreenState();
 }
 
-class _AddTodoPageState extends State<AddTodoPage> {
+class _AddTodoScreenState extends State<AddTodoScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isEdit = false;
@@ -26,7 +23,7 @@ class _AddTodoPageState extends State<AddTodoPage> {
   @override
   void initState() {
     super.initState();
-    final todo = widget.todo;
+    final todo = widget.todo;            //
     if (todo != null) {
       isEdit = true;
       final title = todo['title'];
@@ -44,27 +41,27 @@ class _AddTodoPageState extends State<AddTodoPage> {
         centerTitle: true,
       ),
       body: ListView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         children: [
           TextField(
             controller: titleController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Title",
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           TextField(
             controller: descriptionController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Description",
             ),
             keyboardType: TextInputType.multiline,
             minLines: 5,
             maxLines: 8,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           ElevatedButton(
@@ -79,7 +76,6 @@ class _AddTodoPageState extends State<AddTodoPage> {
   Future<void> updateData() async {
     final todo = widget.todo;
     if (todo == null) {
-      print("object");
       return;
     }
     final id = todo["_id"];
