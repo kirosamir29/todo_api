@@ -83,8 +83,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     final isSuccess = await TodoService.updateTodo(id, body);
     //show success message
     if (isSuccess) {
-      showSuccessMessage(context,message:"Update Success");
-    } else {
+      if(context.mounted){
+        showSuccessMessage(context,message:"Update Success");
+    }} else {
       showErrorMessage(context,message:"Update Failed");
     }
   }
