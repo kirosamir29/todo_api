@@ -1,16 +1,52 @@
 import 'package:dio/dio.dart';
 
+class DioClient {
+  final dio = Dio(BaseOptions(baseUrl: "https://api.nstack.in"));
+
+  DioClient() {
+    // addInterceptor(AuthInterceptor());
+    // addInterceptor(PrintResponsePropertiesInterceptor());
+    addInterceptor(LogInterceptor(responseBody: true,requestBody: true));
+  }
+
+  void addInterceptor(Interceptor interceptor) {
+    dio.interceptors.add(interceptor);
+  }
+}
+
+class AuthInterceptor extends Interceptor {
+  @override
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
+    options.headers.addAll({"token-token": "value value"});
+    print(options.headers);
+    handler.next(options);
+  }
+}
+
+class PrintResponsePropertiesInterceptor extends Interceptor {
+  @override
+  void onResponse(
+      Response response, ResponseInterceptorHandler handler) async {
+    print("***************************");
+    print(response.statusCode);
+    print(response.realUri);
+    print("***************************");
+    super.onResponse(response, handler);
+  }
+}
+
 class TodoService {
-  static final dio = Dio();
+  static DioClient fInterceptor = DioClient();
 
   static Future<bool> deleteById(String id) async {
-    final response = await dio.delete("https://api.nstack.in/v1/todos/$id");
+    final response =
+        await fInterceptor.dio.delete("https://api.nstack.in/v1/todos/$id");
     return response.statusCode == 200;
   }
 
   static Future<List?> fetchTodo() async {
-    final response =
-        await dio.get("https://api.nstack.in/v1/todos?page=1&limit=20");
+    final response = await fInterceptor.dio.get("/v1/todos?page=1&limit=20");
     if (response.statusCode == 200) {
       final result = response.data['items'] as List;
       return result;
@@ -20,7 +56,7 @@ class TodoService {
   }
 
   static Future<bool> updateTodo(String id, Map body) async {
-    final response = await dio.put(
+    final response = await fInterceptor.dio.put(
       "https://api.nstack.in/v1/todos/$id",
       data: body,
       queryParameters: {'Content-Type': 'application/json'},
@@ -29,7 +65,7 @@ class TodoService {
   }
 
   static Future<bool> addTodo(Map body) async {
-    final response = await dio.post(
+    final response = await fInterceptor.dio.post(
       "https://api.nstack.in/v1/todos?page=1&limit=20",
       data: body,
       queryParameters: {'Content-Type': 'application/json'},
