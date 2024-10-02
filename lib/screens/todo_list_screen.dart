@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
-import '../utils/snack_helper.dart';
-import '../widgets/nothing_widget.dart';
+import 'package:todo/utils/snack_helper.dart';
+import 'package:todo/widgets/nothing_widget.dart';
 
 class TodoListScreen extends StatefulWidget {
   const TodoListScreen({super.key});
@@ -79,8 +79,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
       });
     } else {
       //show error
+      if(mounted){
       showErrorMessage(context, message: "Deletion Failed");
-    }
+    }}
   }
 
   Future<void> fetchTodo() async {
@@ -90,8 +91,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
         items = response;
       });
     } else {
+      if(mounted){
       showErrorMessage(context, message: "Something went wrong");
-    }
+    }}
     setState(() {
       isLoading = false;
     });

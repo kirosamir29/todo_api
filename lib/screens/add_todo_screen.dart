@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo/services/todo_service.dart';
-import '../utils/snack_helper.dart';
+import 'package:todo/utils/snack_helper.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final Map? todo;
-
 
   const AddTodoScreen({
     super.key,
@@ -23,7 +22,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   @override
   void initState() {
     super.initState();
-    final todo = widget.todo;            //
+    final todo = widget.todo;
     if (todo != null) {
       isEdit = true;
       final title = todo['title'];
@@ -79,40 +78,39 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       return;
     }
     final id = todo["_id"];
-    // submit updated data
     final isSuccess = await TodoService.updateTodo(id, body);
-    //show success message
     if (isSuccess) {
-      if(context.mounted){
-        showSuccessMessage(context,message:"Update Success");
-    }} else {
-      showErrorMessage(context,message:"Update Failed");
+      if (mounted) {
+        showSuccessMessage(context, message: "Update Success");
+      }
+    } else {
+      if (mounted) {
+        showErrorMessage(context, message: "Update Failed");
+      }
     }
   }
 
   Future<void> submitData() async {
-    //submit data to server
     final isSuccess = await TodoService.addTodo(body);
-    //show success or fail message
-    if (isSuccess) {
-      titleController.text = "";
-      descriptionController.text = "";
-      showSuccessMessage(context,message:"Creation Success");
-    } else {
-      showErrorMessage(context,message:"Creation Failed");
+
+    if (mounted) {
+      if (isSuccess) {
+        titleController.text = "";
+        descriptionController.text = "";
+        showSuccessMessage(context, message: "Creation Success");
+      } else {
+        showErrorMessage(context, message: "Creation Failed");
+      }
     }
   }
 
-  // get data from form
-  Map get body {final title = titleController.text;
-  final description = descriptionController.text;
-  return {
-    "title": title,
-    "description": description,
-    "is_completed": false,
-  };
+  Map get body {
+    final title = titleController.text;
+    final description = descriptionController.text;
+    return {
+      "title": title,
+      "description": description,
+      "is_completed": false,
+    };
   }
-
 }
-
-
