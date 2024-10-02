@@ -7,7 +7,7 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(git 
+        child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: Colors.grey,
