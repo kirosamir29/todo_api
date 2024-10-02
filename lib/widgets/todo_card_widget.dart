@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TodoCardWidget extends StatelessWidget {
   final int index;
   final Map item;
-  final Function(Map) navigationEditCallback;
+  final Function(Map,int) navigationEditCallback;
   final Function(String) deleteById;
 
   const TodoCardWidget({
@@ -26,7 +26,7 @@ class TodoCardWidget extends StatelessWidget {
         subtitle: Text(item['description']),
         trailing: PopupMenuButton(onSelected: (value) {
           if (value == "edit") {
-            navigationEditCallback(item);
+            navigationEditCallback(item,index);
           } else if (value == "delete") {
             deleteById(id);
           }

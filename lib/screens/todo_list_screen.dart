@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
 import 'package:todo/widgets/loading_widget.dart';
+import 'package:todo/widgets/todo_card_widget.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
 import 'package:todo/utils/snack_helper.dart';
 import 'package:todo/widgets/nothing_widget.dart';
@@ -15,6 +16,9 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   bool isLoading = true;
+  Map? selectedItem;
+  int selectedIndex=0;
+  bool isPortrait = true;
   List items = [];
 
   @override
@@ -27,6 +31,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Stack(
       children: [
         Scaffold(
@@ -38,19 +43,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
               onPressed: navigateToAddPage,
               label: const Text("Add Todo"),
             ),
-            body: Visibility(
-                visible: isLoading,
-                replacement: RefreshIndicator(
-                    onRefresh: fetchTodo,
-                    child: Visibility(
-                        visible: items.isNotEmpty,
-                        replacement: const NothingWidget(),
-                        child: TodoListWidget(
-                          items: items,
-                          deleteById: deleteById,
-                          navigationEditCallback: navigateToEditPage,
-                        ))),
-                child: const Center(child: CircularProgressIndicator()))),
+            body:
+                isPortrait ? _buildPortraitWidget() : _buildLandscapeWidget()),
         isLoading ? const LoadingWidget() : const SizedBox.shrink()
       ],
     );
@@ -107,5 +101,69 @@ class _TodoListScreenState extends State<TodoListScreen> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  Widget _buildPortraitWidget() {
+    return Visibility(
+        visible: isLoading,
+        replacement: RefreshIndicator(
+            onRefresh: fetchTodo,
+            child: Visibility(
+                visible: items.isNotEmpty,
+                replacement: const NothingWidget(),
+                child: TodoListWidget(
+                  items: items,
+                  deleteById: deleteById,
+                  navigationEditCallback: (map,index){
+                    navigateToEditPage(map);
+                  },
+                ))),
+        child: const Center(child: CircularProgressIndicator()));
+  }
+
+  Widget _buildLandscapeWidget() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(
+          width: 300,
+          child: TodoListWidget(
+            items: items,
+            navigationEditCallback: (map,index) {
+              setState(() {
+                selectedItem = map;
+                selectedIndex=index;
+              });
+            },
+            deleteById: deleteById,
+          ),
+        ),
+        _noSelectedItem(),
+        _selectedItem()
+      ],
+    );
+  }
+
+  Widget _noSelectedItem() {
+    if (selectedItem == null) {
+      return const Expanded(
+        child: Center(
+          child: Text("No selected item"),
+        ),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
+  }
+
+  Widget _selectedItem() {
+    if (selectedItem != null) {
+      return Expanded(
+        child: AddTodoScreen(todo: selectedItem,),
+      );
+    } else {
+      return SizedBox.shrink();
+    }
   }
 }

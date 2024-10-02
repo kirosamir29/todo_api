@@ -3,7 +3,7 @@ import 'package:todo/widgets/todo_card_widget.dart';
 
 class TodoListWidget extends StatelessWidget {
   final List items;
-  final Function(Map) navigationEditCallback;
+  final Function(Map,int) navigationEditCallback;
   final Function(String) deleteById;
 
   const TodoListWidget({
