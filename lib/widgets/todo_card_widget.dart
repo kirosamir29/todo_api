@@ -26,10 +26,8 @@ class TodoCardWidget extends StatelessWidget {
         subtitle: Text(item['description']),
         trailing: PopupMenuButton(onSelected: (value) {
           if (value == "edit") {
-            // open Edit Page
             navigationEditCallback(item);
           } else if (value == "delete") {
-            // delete item
             deleteById(id);
           }
         }, itemBuilder: (context) {

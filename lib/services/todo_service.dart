@@ -9,8 +9,7 @@ class TodoService {
   }
 
   static Future<List?> fetchTodo() async {
-    final response =
-        await dio.get("https://api.nstack.in/v1/todos?page=1&limit=20");
+    final response = await dio.get("https://api.nstack.in/v1/todos?page=1&limit=20");
     if (response.statusCode == 200) {
       final result = response.data['items'] as List;
       return result;
