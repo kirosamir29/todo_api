@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
-import 'package:todo/widgets/loading_widget.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
 import 'package:todo/utils/snack_helper.dart';
 import 'package:todo/widgets/nothing_widget.dart';
@@ -27,8 +26,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
+    return
         Scaffold(
             appBar: AppBar(
               title: const Text("Todo List"),
@@ -50,9 +48,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                           deleteById: deleteById,
                           navigationEditCallback: navigateToEditPage,
                         ))),
-                child: const Center(child: CircularProgressIndicator()))),
-        isLoading ? const LoadingWidget() : const SizedBox.shrink()
-      ],
+                child: const Center(child: CircularProgressIndicator())),
     );
   }
 
