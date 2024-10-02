@@ -4,9 +4,7 @@ class DioClient {
   final dio = Dio(BaseOptions(baseUrl: "https://api.nstack.in"));
 
   DioClient() {
-    // addInterceptor(AuthInterceptor());
-    // addInterceptor(PrintResponsePropertiesInterceptor());
-    addInterceptor(LogInterceptor(responseBody: true,requestBody: true));
+    addInterceptor(LogInterceptor(responseBody: true, requestBody: true));
   }
 
   void addInterceptor(Interceptor interceptor) {
@@ -26,8 +24,7 @@ class AuthInterceptor extends Interceptor {
 
 class PrintResponsePropertiesInterceptor extends Interceptor {
   @override
-  void onResponse(
-      Response response, ResponseInterceptorHandler handler) async {
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
     print("***************************");
     print(response.statusCode);
     print(response.realUri);
