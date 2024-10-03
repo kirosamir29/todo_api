@@ -30,27 +30,28 @@ class _TodoListScreenState extends State<TodoListScreen> {
     return Stack(
       children: [
         Scaffold(
-            appBar: AppBar(
-              title: const Text("Todo List"),
-              centerTitle: true,
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: navigateToAddPage,
-              label: const Text("Add Todo"),
-            ),
-            body: Visibility(
-                visible: isLoading,
-                replacement: RefreshIndicator(
-                    onRefresh: fetchTodo,
-                    child: Visibility(
-                        visible: items.isNotEmpty,
-                        replacement: const NothingWidget(),
-                        child: TodoListWidget(
-                          items: items,
-                          deleteById: deleteById,
-                          navigationEditCallback: navigateToEditPage,
-                        ))),
-                child: const Center(child: CircularProgressIndicator()))),
+          appBar: AppBar(
+            title: const Text("Todo List"),
+            centerTitle: true,
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: navigateToAddPage,
+            label: const Text("Add Todo"),
+          ),
+          body: Visibility(
+              visible: isLoading,
+              replacement: RefreshIndicator(
+                  onRefresh: fetchTodo,
+                  child: Visibility(
+                      visible: items.isNotEmpty,
+                      replacement: const NothingWidget(),
+                      child: TodoListWidget(
+                        items: items,
+                        deleteById: deleteById,
+                        navigationEditCallback: navigateToEditPage,
+                      ))),
+              child: const Center(child: CircularProgressIndicator())),
+        ),
         isLoading ? const LoadingWidget() : const SizedBox.shrink()
       ],
     );
