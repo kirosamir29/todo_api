@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TodoCardWidget extends StatelessWidget {
   final int index;
   final Map item;
-  final Function(Map,int) navigationEditCallback;
+  final Function(Map) navigationEditCallback;
   final Function(String) deleteById;
 
   const TodoCardWidget({
@@ -18,8 +18,8 @@ class TodoCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = item['_id'] as String;
     return GestureDetector(
-      onTap: (){
-
+      onTap: () {
+        navigationEditCallback(item);
       },
       child: Card(
         child: ListTile(
@@ -30,7 +30,7 @@ class TodoCardWidget extends StatelessWidget {
           subtitle: Text(item['description']),
           trailing: PopupMenuButton(onSelected: (value) {
             if (value == "edit") {
-              navigationEditCallback(item,index);
+              navigationEditCallback(item);
             } else if (value == "delete") {
               deleteById(id);
             }

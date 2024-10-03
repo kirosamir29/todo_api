@@ -4,10 +4,12 @@ import 'package:todo/utils/snack_helper.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final Map? todo;
+  final bool isLandscape;
 
   const AddTodoScreen({
     super.key,
     this.todo,
+    required this.isLandscape,
   });
 
   @override
@@ -35,10 +37,12 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEdit ? "Edit Todo" : "Add Todo"),
-        centerTitle: true,
-      ),
+      appBar: widget.isLandscape
+          ? null
+          : AppBar(
+              title: Text(isEdit ? "Edit Todo" : "Add Todo"),
+              centerTitle: true,
+            ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [

@@ -15,8 +15,6 @@ class TodoListScreen extends StatefulWidget {
 class _TodoListScreenState extends State<TodoListScreen> {
   bool isLoading = true;
   Map? selectedItem;
-  int selectedIndex = 0;
-  bool isPortrait = true;
   List items = [];
 
   @override
@@ -29,23 +27,24 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Todo List"),
+        title: const Text("Add Todo"),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: navigateToAddPage,
         label: const Text("Add Todo"),
       ),
-      body: isPortrait ? _buildPortraitWidget() : _buildLandscapeWidget(),
+      body: isPortraitMode() ? _buildPortraitWidget() : _buildLandscapeWidget(),
     );
   }
 
   Future<void> navigateToAddPage() async {
     final route = MaterialPageRoute(
-      builder: (context) => const AddTodoScreen(),
+      builder: (context) => const AddTodoScreen(
+        isLandscape: false,
+      ),
     );
     await Navigator.push(context, route);
     setState(() {
@@ -56,7 +55,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   Future<void> navigateToEditPage(Map item) async {
     final route = MaterialPageRoute(
-      builder: (context) => AddTodoScreen(todo: item),
+      builder: (context) => AddTodoScreen(isLandscape: false, todo: item),
     );
     await Navigator.push(context, route);
     setState(() {});
@@ -106,10 +105,10 @@ class _TodoListScreenState extends State<TodoListScreen> {
                 replacement: const NothingWidget(),
                 child: TodoListWidget(
                   items: items,
-                  deleteById: deleteById,
-                  navigationEditCallback: (map, index) {
-                    navigateToEditPage(map);
+                  deleteById: (id) {
+                    deleteById(id);
                   },
+                  navigationEditCallback: navigateToEditPage,
                 ))),
         child: const Center(child: CircularProgressIndicator()));
   }
@@ -123,10 +122,9 @@ class _TodoListScreenState extends State<TodoListScreen> {
           width: 300,
           child: TodoListWidget(
             items: items,
-            navigationEditCallback: (map, index) {
+            navigationEditCallback: (map) {
               setState(() {
                 selectedItem = map;
-                selectedIndex = index;
               });
             },
             deleteById: deleteById,
@@ -154,11 +152,16 @@ class _TodoListScreenState extends State<TodoListScreen> {
     if (selectedItem != null) {
       return Expanded(
         child: AddTodoScreen(
+          isLandscape: true,
           todo: selectedItem,
         ),
       );
     } else {
       return SizedBox.shrink();
     }
+  }
+
+  bool isPortraitMode() {
+    return MediaQuery.of(context).orientation == Orientation.portrait;
   }
 }
