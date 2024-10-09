@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
+import 'package:todo/utils/app_localization_class.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
 import 'package:todo/utils/snack_helper.dart';
 import 'package:todo/widgets/nothing_widget.dart';
 
 class TodoListScreen extends StatefulWidget {
-  const TodoListScreen({super.key});
+  final Function changeLangCallback;
+
+  const TodoListScreen({super.key, required this.changeLangCallback});
 
   @override
   State<TodoListScreen> createState() => _TodoListScreenState();
@@ -26,29 +29,35 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        Scaffold(
-            appBar: AppBar(
-              title: const Text("Todo List"),
-              centerTitle: true,
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: navigateToAddPage,
-              label: const Text("Add Todo"),
-            ),
-            body: Visibility(
-                visible: isLoading,
-                replacement: RefreshIndicator(
-                    onRefresh: fetchTodo,
-                    child: Visibility(
-                        visible: items.isNotEmpty,
-                        replacement: const NothingWidget(),
-                        child: TodoListWidget(
-                          items: items,
-                          deleteById: deleteById,
-                          navigationEditCallback: navigateToEditPage,
-                        ))),
-                child: const Center(child: CircularProgressIndicator())),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("app_bar_title".tr(context)),
+        centerTitle: true,
+        actions: [
+          TextButton(
+              onPressed: () {
+                widget.changeLangCallback();
+              },
+              child: Text("change_lang".tr(context)))
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: navigateToAddPage,
+        label: Text("floating_button_label".tr(context)),
+      ),
+      body: Visibility(
+          visible: isLoading,
+          replacement: RefreshIndicator(
+              onRefresh: fetchTodo,
+              child: Visibility(
+                  visible: items.isNotEmpty,
+                  replacement: const NothingWidget(),
+                  child: TodoListWidget(
+                    items: items,
+                    deleteById: deleteById,
+                    navigationEditCallback: navigateToEditPage,
+                  ))),
+          child: const Center(child: CircularProgressIndicator())),
     );
   }
 

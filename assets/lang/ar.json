@@ -1,0 +1,15 @@
+{
+  "change_lang": "English",
+  "app_bar_title": "قائمة المهام",
+  "floating_button_label": "إضافة مهمة",
+  "empty_status": "لا يوجد مهام",
+  "edit_title": "تعديل المهمة",
+  "add_title": "إضافة مهمة",
+  "todo_title": "العنوان",
+  "todo_description": "الوصف",
+  "submit_button": "إضافة",
+  "update_button": "تعديل",
+  "pop_up_edit": "تعديل",
+  "pop_up_delete": "حذف"
+
+}

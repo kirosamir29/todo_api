@@ -1,0 +1,14 @@
+{
+  "change_lang": "العربية",
+  "app_bar_title": "Todo List",
+  "floating_button_label": "Add Todo",
+  "empty_status": "No thing to do",
+  "edit_title": "Edit Todo",
+  "add_title": "Add Todo",
+  "todo_title": "Title",
+  "todo_description": "Description",
+  "submit_button": "Submit",
+  "update_button": "Update",
+  "pop_up_edit": "edit",
+  "pop_up_delete": "delete"
+}
