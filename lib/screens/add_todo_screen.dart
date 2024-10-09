@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/services/todo_service.dart';
+import 'package:todo/utils/app_localization_class.dart';
 import 'package:todo/utils/snack_helper.dart';
 
 class AddTodoScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEdit ? "Edit Todo" : "Add Todo"),
+        title: Text(isEdit ? "edit_title".tr(context) : "add_title".tr(context)),
         centerTitle: true,
       ),
       body: ListView(
@@ -44,8 +45,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         children: [
           TextField(
             controller: titleController,
-            decoration: const InputDecoration(
-              hintText: "Title",
+            decoration: InputDecoration(
+              hintText: "todo_title".tr(context),
             ),
           ),
           const SizedBox(
@@ -53,8 +54,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           ),
           TextField(
             controller: descriptionController,
-            decoration: const InputDecoration(
-              hintText: "Description",
+            decoration: InputDecoration(
+              hintText: "todo_description".tr(context),
             ),
             keyboardType: TextInputType.multiline,
             minLines: 5,
@@ -64,9 +65,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
             height: 20,
           ),
           ElevatedButton(
-            onPressed: isEdit ? updateData : submitData,
-            child: Text(isEdit ? "Update" : "Submit"),
-          ),
+              onPressed: isEdit ? updateData : submitData,
+              child: Text(isEdit ? "update_button".tr(context) : "submit_button".tr(context))),
         ],
       ),
     );

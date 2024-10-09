@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/utils/app_localization_class.dart';
 
 class TodoCardWidget extends StatelessWidget {
   final int index;
@@ -31,9 +32,11 @@ class TodoCardWidget extends StatelessWidget {
             deleteById(id);
           }
         }, itemBuilder: (context) {
-          return const [
-            PopupMenuItem(value: "edit", child: Text("Edit")),
-            PopupMenuItem(value: "delete", child: Text("Delete"))
+          return [
+            PopupMenuItem(
+                value: "edit", child: Text("pop_up_edit".tr(context))),
+            PopupMenuItem(
+                value: "delete", child: Text("pop_up_delete".tr(context)))
           ];
         }),
       ),
