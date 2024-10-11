@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:todo/localization/localization_keys.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
+import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/widgets/loading_widget.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
 import 'package:todo/utils/snack_helper.dart';
 import 'package:todo/widgets/nothing_widget.dart';
 
 class TodoListScreen extends StatefulWidget {
-  const TodoListScreen({super.key});
+  final Function changeLangCallback;
+
+  const TodoListScreen({super.key, required this.changeLangCallback});
 
   @override
   State<TodoListScreen> createState() => _TodoListScreenState();
@@ -14,6 +19,7 @@ class TodoListScreen extends StatefulWidget {
 
 class _TodoListScreenState extends State<TodoListScreen> {
   bool isLoading = true;
+  Map? selectedItem;
   List items = [];
 
   @override
@@ -26,35 +32,38 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
+    return Stack(
+      children: [
         Scaffold(
-            appBar: AppBar(
-              title: const Text("Todo List"),
-              centerTitle: true,
-            ),
-            floatingActionButton: FloatingActionButton.extended(
-              onPressed: navigateToAddPage,
-              label: const Text("Add Todo"),
-            ),
-            body: Visibility(
-                visible: isLoading,
-                replacement: RefreshIndicator(
-                    onRefresh: fetchTodo,
-                    child: Visibility(
-                        visible: items.isNotEmpty,
-                        replacement: const NothingWidget(),
-                        child: TodoListWidget(
-                          items: items,
-                          deleteById: deleteById,
-                          navigationEditCallback: navigateToEditPage,
-                        ))),
-                child: const Center(child: CircularProgressIndicator())),
+          appBar: AppBar(
+            title: Text(LocalizationKeys.todoList.tr(context)),
+            centerTitle: true,
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    widget.changeLangCallback();
+                  },
+                  child: Text(LocalizationKeys.language.tr(context)))
+            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: navigateToAddPage,
+            label: Text(LocalizationKeys.addTodo.tr(context)),
+          ),
+          body: isPortraitMode()
+              ? _buildPortraitWidget()
+              : _buildLandscapeWidget(),
+        ),
+        isLoading ? const LoadingWidget() : const SizedBox.shrink()
+      ],
     );
   }
 
   Future<void> navigateToAddPage() async {
     final route = MaterialPageRoute(
-      builder: (context) => const AddTodoScreen(),
+      builder: (context) => const AddTodoScreen(
+        isLandscape: false,
+      ),
     );
     await Navigator.push(context, route);
     setState(() {
@@ -65,7 +74,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   Future<void> navigateToEditPage(Map item) async {
     final route = MaterialPageRoute(
-      builder: (context) => AddTodoScreen(todo: item),
+      builder: (context) => AddTodoScreen(isLandscape: false, todo: item),
     );
     await Navigator.push(context, route);
     setState(() {});
@@ -84,7 +93,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
     } else {
       //show error
       if (mounted) {
-        showErrorMessage(context, message: "Deletion Failed");
+        showErrorMessage(context,
+            message: LocalizationKeys.deleteFailed.tr(context));
       }
     }
   }
@@ -103,5 +113,75 @@ class _TodoListScreenState extends State<TodoListScreen> {
     setState(() {
       isLoading = false;
     });
+  }
+
+  Widget _buildPortraitWidget() {
+    return Visibility(
+        visible: isLoading,
+        replacement: RefreshIndicator(
+            onRefresh: fetchTodo,
+            child: Visibility(
+                visible: items.isNotEmpty,
+                replacement: const NothingWidget(),
+                child: TodoListWidget(
+                  items: items,
+                  deleteById: (id) {
+                    deleteById(id);
+                  },
+                  navigationEditCallback: navigateToEditPage,
+                ))),
+        child: const Center(child: CircularProgressIndicator()));
+  }
+
+  Widget _buildLandscapeWidget() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(
+          width: 300,
+          child: TodoListWidget(
+            items: items,
+            navigationEditCallback: (map) {
+              setState(() {
+                selectedItem = map;
+              });
+            },
+            deleteById: deleteById,
+          ),
+        ),
+        _noSelectedItem(),
+        _selectedItem()
+      ],
+    );
+  }
+
+  Widget _noSelectedItem() {
+    if (selectedItem == null) {
+      return const Expanded(
+        child: Center(
+          child: Text("No selected item"),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget _selectedItem() {
+    if (selectedItem != null) {
+      return Expanded(
+        child: AddTodoScreen(
+          isLandscape: true,
+          todo: selectedItem,
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  bool isPortraitMode() {
+    return MediaQuery.of(context).orientation == Orientation.portrait;
   }
 }
