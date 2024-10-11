@@ -3,6 +3,7 @@ import 'package:todo/localization/localization_keys.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
 import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/widgets/loading_widget.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
 import 'package:todo/utils/snack_helper.dart';
 import 'package:todo/widgets/nothing_widget.dart';
@@ -31,23 +32,30 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(LocalizationKeys.todoList.tr(context)),
-        centerTitle: true,
-        actions: [
-          TextButton(
-              onPressed: () {
-                widget.changeLangCallback();
-              },
-              child: Text(LocalizationKeys.language.tr(context)))
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: navigateToAddPage,
-        label: Text(LocalizationKeys.addTodo.tr(context)),
-      ),
-      body:isPortraitMode() ? _buildPortraitWidget() : _buildLandscapeWidget(),
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: Text(LocalizationKeys.todoList.tr(context)),
+            centerTitle: true,
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    widget.changeLangCallback();
+                  },
+                  child: Text(LocalizationKeys.language.tr(context)))
+            ],
+          ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: navigateToAddPage,
+            label: Text(LocalizationKeys.addTodo.tr(context)),
+          ),
+          body: isPortraitMode()
+              ? _buildPortraitWidget()
+              : _buildLandscapeWidget(),
+        ),
+        isLoading ? const LoadingWidget() : const SizedBox.shrink()
+      ],
     );
   }
 
@@ -85,7 +93,8 @@ class _TodoListScreenState extends State<TodoListScreen> {
     } else {
       //show error
       if (mounted) {
-        showErrorMessage(context, message: LocalizationKeys.deleteFailed.tr(context));
+        showErrorMessage(context,
+            message: LocalizationKeys.deleteFailed.tr(context));
       }
     }
   }

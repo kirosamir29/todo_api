@@ -14,5 +14,6 @@
   "creation_failed": "Creation Failed",
   "update_success": "Update Success",
   "update_failed": "Update Failed",
-  "delete_failed": "Delete Failed"
+  "delete_failed": "Delete Failed",
+  "please_wait": "Please Wait"
 }

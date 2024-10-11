@@ -15,4 +15,5 @@ class LocalizationKeys {
   static const String updateSuccess = "update_success";
   static const String updateFailed = "update_failed";
   static const String deleteFailed = "delete_failed";
+  static const String pleaseWait = "please_wait";
 }
