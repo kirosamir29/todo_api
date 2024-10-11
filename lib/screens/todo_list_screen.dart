@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/localization/localization_keys.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
 import 'package:todo/utils/app_localization_class.dart';
@@ -31,19 +32,19 @@ class _TodoListScreenState extends State<TodoListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("app_bar_title".tr(context)),
+        title: Text(LocalizationKeys.todoList.tr(context)),
         centerTitle: true,
         actions: [
           TextButton(
               onPressed: () {
                 widget.changeLangCallback();
               },
-              child: Text("change_lang".tr(context)))
+              child: Text(LocalizationKeys.language.tr(context)))
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: navigateToAddPage,
-        label: Text("floating_button_label".tr(context)),
+        label: Text(LocalizationKeys.addTodo.tr(context)),
       ),
       body: Visibility(
           visible: isLoading,
@@ -93,7 +94,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
     } else {
       //show error
       if (mounted) {
-        showErrorMessage(context, message: "Deletion Failed");
+        showErrorMessage(context, message: LocalizationKeys.deleteFailed.tr(context));
       }
     }
   }
