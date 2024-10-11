@@ -1,0 +1,18 @@
+{
+  "english": "English",
+  "todo_list": "قائمة المهام",
+  "add_todo": "إضافة مهمة",
+  "no_thing_to_do": "لا يوجد مهام",
+  "edit_todo": "تعديل المهمة",
+  "title": "العنوان",
+  "description": "الوصف",
+  "submit": "إضافة",
+  "update": "تعديل",
+  "edit": "تعديل",
+  "delete": "حذف",
+  "creation_success": "تمت الإضافة بنجاح",
+  "creation_failed": "فشلت الإضافة",
+  "update_success": "تم التعديل بنجاح",
+  "update_failed": "فشل التعديل",
+  "delete_failed": "فشل الحذف"
+}
