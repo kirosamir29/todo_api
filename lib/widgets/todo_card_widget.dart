@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/localization/localization_keys.dart';
-import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/utils/app_localization.dart';
 
 class TodoCardWidget extends StatelessWidget {
   final int index;
@@ -38,8 +38,12 @@ class TodoCardWidget extends StatelessWidget {
             }
           }, itemBuilder: (context) {
             return [
-              PopupMenuItem(value: "edit", child: Text(LocalizationKeys.edit.tr(context))),
-              PopupMenuItem(value: "delete", child: Text(LocalizationKeys.delete.tr(context)))
+              PopupMenuItem(
+                  value: "edit",
+                  child: Text(LocalizationKeys.edit.tr(context))),
+              PopupMenuItem(
+                  value: "delete",
+                  child: Text(LocalizationKeys.delete.tr(context)))
             ];
           }),
         ),

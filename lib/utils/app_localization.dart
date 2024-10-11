@@ -16,7 +16,7 @@ class AppLocalizations {
 
   // A LocalizationsDelegate for this localization class
   static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
+      _AppLocalizationsDelegate();
 
   // A map to store the localized strings
   late Map<String, String> _localizedStrings;
@@ -24,7 +24,7 @@ class AppLocalizations {
   // Method to load localized strings from JSON files
   Future loadJsonLanguage() async {
     String jsonString =
-    await rootBundle.loadString("assets/lang/${locale!.languageCode}.json");
+        await rootBundle.loadString("assets/lang/${locale!.languageCode}.json");
 
     // Parse the JSON string into a map
     Map<String, dynamic> jsonMap = json.decode(jsonString);
@@ -73,6 +73,7 @@ class _AppLocalizationsDelegate
   bool shouldReload(covariant LocalizationsDelegate<AppLocalizations> old) =>
       false;
 }
+
 extension TranslateWhoutArgs on String {
   String tr(BuildContext context) {
     return AppLocalizations.of(context)!.translate(this);
