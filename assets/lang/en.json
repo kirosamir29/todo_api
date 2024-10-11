@@ -1,0 +1,19 @@
+{
+  "english": "العربية",
+  "todo_list": "Todo List",
+  "add_todo": "Add Todo",
+  "no_thing_to_do": "No thing to do",
+  "edit_todo": "Edit Todo",
+  "title": "Title",
+  "description": "Description",
+  "submit": "Submit",
+  "update": "Update",
+  "edit": "edit",
+  "delete": "delete",
+  "creation_success": "Creation Success",
+  "creation_failed": "Creation Failed",
+  "update_success": "Update Success",
+  "update_failed": "Update Failed",
+  "delete_failed": "Delete Failed",
+  "please_wait": "Please Wait"
+}

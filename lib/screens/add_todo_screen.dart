@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:todo/localization/localization_keys.dart';
 import 'package:todo/services/todo_service.dart';
+import 'package:todo/utils/app_localization_class.dart';
 import 'package:todo/utils/snack_helper.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final Map? todo;
+  final bool isLandscape;
 
   const AddTodoScreen({
     super.key,
     this.todo,
+    required this.isLandscape,
   });
 
   @override
@@ -35,8 +39,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(isEdit ? "Edit Todo" : "Add Todo"),
+      appBar: widget.isLandscape
+          ? null
+          : AppBar(
+        title: Text(isEdit ? LocalizationKeys.editTodo.tr(context) : LocalizationKeys.addTodo.tr(context)),
         centerTitle: true,
       ),
       body: ListView(
@@ -44,8 +50,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
         children: [
           TextField(
             controller: titleController,
-            decoration: const InputDecoration(
-              hintText: "Title",
+            decoration: InputDecoration(
+              hintText: LocalizationKeys.title.tr(context),
             ),
           ),
           const SizedBox(
@@ -53,8 +59,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           ),
           TextField(
             controller: descriptionController,
-            decoration: const InputDecoration(
-              hintText: "Description",
+            decoration: InputDecoration(
+              hintText: LocalizationKeys.description.tr(context),
             ),
             keyboardType: TextInputType.multiline,
             minLines: 5,
@@ -64,9 +70,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
             height: 20,
           ),
           ElevatedButton(
-            onPressed: isEdit ? updateData : submitData,
-            child: Text(isEdit ? "Update" : "Submit"),
-          ),
+              onPressed: isEdit ? updateData : submitData,
+              child: Text(isEdit ? LocalizationKeys.update.tr(context) : LocalizationKeys.submit.tr(context))),
         ],
       ),
     );
@@ -81,11 +86,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     final isSuccess = await TodoService.updateTodo(id, body);
     if (isSuccess) {
       if (mounted) {
-        showSuccessMessage(context, message: "Update Success");
+        showSuccessMessage(context, message: LocalizationKeys.updateSuccess.tr(context));
       }
     } else {
       if (mounted) {
-        showErrorMessage(context, message: "Update Failed");
+        showErrorMessage(context, message: LocalizationKeys.updateFailed.tr(context));
       }
     }
   }
@@ -97,9 +102,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       if (isSuccess) {
         titleController.text = "";
         descriptionController.text = "";
-        showSuccessMessage(context, message: "Creation Success");
+        showSuccessMessage(context, message: LocalizationKeys.creationSuccess.tr(context));
       } else {
-        showErrorMessage(context, message: "Creation Failed");
+        showErrorMessage(context, message: LocalizationKeys.creationFailed.tr(context));
       }
     }
   }
