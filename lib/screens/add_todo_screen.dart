@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/localization/localization_keys.dart';
 import 'package:todo/services/todo_service.dart';
-import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/utils/app_localization.dart';
 import 'package:todo/utils/snack_helper.dart';
 
 class AddTodoScreen extends StatefulWidget {
@@ -42,9 +42,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       appBar: widget.isLandscape
           ? null
           : AppBar(
-        title: Text(isEdit ? LocalizationKeys.editTodo.tr(context) : LocalizationKeys.addTodo.tr(context)),
-        centerTitle: true,
-      ),
+              title: Text(isEdit
+                  ? LocalizationKeys.editTodo.tr(context)
+                  : LocalizationKeys.addTodo.tr(context)),
+              centerTitle: true,
+            ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -71,7 +73,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           ),
           ElevatedButton(
               onPressed: isEdit ? updateData : submitData,
-              child: Text(isEdit ? LocalizationKeys.update.tr(context) : LocalizationKeys.submit.tr(context))),
+              child: Text(isEdit
+                  ? LocalizationKeys.update.tr(context)
+                  : LocalizationKeys.submit.tr(context))),
         ],
       ),
     );
@@ -86,11 +90,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
     final isSuccess = await TodoService.updateTodo(id, body);
     if (isSuccess) {
       if (mounted) {
-        showSuccessMessage(context, message: LocalizationKeys.updateSuccess.tr(context));
+        showSuccessMessage(context,
+            message: LocalizationKeys.updateSuccess.tr(context));
       }
     } else {
       if (mounted) {
-        showErrorMessage(context, message: LocalizationKeys.updateFailed.tr(context));
+        showErrorMessage(context,
+            message: LocalizationKeys.updateFailed.tr(context));
       }
     }
   }
@@ -102,9 +108,11 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       if (isSuccess) {
         titleController.text = "";
         descriptionController.text = "";
-        showSuccessMessage(context, message: LocalizationKeys.creationSuccess.tr(context));
+        showSuccessMessage(context,
+            message: LocalizationKeys.creationSuccess.tr(context));
       } else {
-        showErrorMessage(context, message: LocalizationKeys.creationFailed.tr(context));
+        showErrorMessage(context,
+            message: LocalizationKeys.creationFailed.tr(context));
       }
     }
   }

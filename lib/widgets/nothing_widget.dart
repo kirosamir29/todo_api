@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo/localization/localization_keys.dart';
-import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/utils/app_localization.dart';
 
 class NothingWidget extends StatelessWidget {
   const NothingWidget({super.key});

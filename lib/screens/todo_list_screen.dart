@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:todo/localization/localization_keys.dart';
 import 'package:todo/screens/add_todo_screen.dart';
 import 'package:todo/services/todo_service.dart';
-import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/utils/app_localization.dart';
+import 'package:todo/utils/orientation_helper.dart';
 import 'package:todo/widgets/loading_widget.dart';
+import 'package:todo/widgets/sized_box_shrink_widget.dart';
 import 'package:todo/widgets/todo_list_widget.dart';
 import 'package:todo/utils/snack_helper.dart';
 import 'package:todo/widgets/nothing_widget.dart';
@@ -50,11 +52,11 @@ class _TodoListScreenState extends State<TodoListScreen> {
             onPressed: navigateToAddPage,
             label: Text(LocalizationKeys.addTodo.tr(context)),
           ),
-          body: isPortraitMode()
+          body: isPortraitMode(context)
               ? _buildPortraitWidget()
               : _buildLandscapeWidget(),
         ),
-        isLoading ? const LoadingWidget() : const SizedBox.shrink()
+        isLoading ? const LoadingWidget() : const SizedBoxShrinkWidget()
       ],
     );
   }
@@ -130,7 +132,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
                   },
                   navigationEditCallback: navigateToEditPage,
                 ))),
-        child: const Center(child: CircularProgressIndicator()));
+        child: const SizedBoxShrinkWidget());
   }
 
   Widget _buildLandscapeWidget() {
@@ -164,7 +166,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ),
       );
     } else {
-      return const SizedBox.shrink();
+      return const SizedBoxShrinkWidget();
     }
   }
 
@@ -177,11 +179,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
         ),
       );
     } else {
-      return const SizedBox.shrink();
+      return const SizedBoxShrinkWidget();
     }
-  }
-
-  bool isPortraitMode() {
-    return MediaQuery.of(context).orientation == Orientation.portrait;
   }
 }

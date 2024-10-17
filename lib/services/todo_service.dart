@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class DioClient {
   final dio = Dio(BaseOptions(baseUrl: "https://api.nstack.in"));
@@ -17,7 +18,6 @@ class AuthInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers.addAll({"token-token": "value value"});
-    print(options.headers);
     handler.next(options);
   }
 }
@@ -25,10 +25,10 @@ class AuthInterceptor extends Interceptor {
 class PrintResponsePropertiesInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    print("***************************");
-    print(response.statusCode);
-    print(response.realUri);
-    print("***************************");
+    debugPrint("***************************");
+    debugPrint("${response.statusCode}");
+    debugPrint("${response.realUri}");
+    debugPrint("***************************");
     super.onResponse(response, handler);
   }
 }

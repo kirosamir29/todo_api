@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/localization/localization_keys.dart';
-import 'package:todo/utils/app_localization_class.dart';
+import 'package:todo/utils/app_localization.dart';
+import 'package:todo/widgets/circular_indicator_widget.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({super.key});
@@ -27,7 +28,7 @@ class LoadingWidget extends StatelessWidget {
               const SizedBox(
                 height: 16,
               ),
-              const CircularProgressIndicator(),
+              const CircularIndicatorWidget(),
             ],
           ),
         ),
