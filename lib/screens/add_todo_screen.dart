@@ -22,6 +22,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   bool isEdit = false;
+  TodoService service = TodoService();
 
   @override
   void initState() {
@@ -83,7 +84,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       return;
     }
     final id = todo["_id"];
-    final isSuccess = await TodoService.updateTodo(id, body);
+    final isSuccess = await service.updateTodo(id, body);
     if (isSuccess) {
       if (mounted) {
         showSuccessMessage(context, message: LocalizationKeys.updateSuccess.tr(context));
@@ -96,7 +97,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   }
 
   Future<void> submitData() async {
-    final isSuccess = await TodoService.addTodo(body);
+    final isSuccess = await service.addTodo(body);
 
     if (mounted) {
       if (isSuccess) {

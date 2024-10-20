@@ -21,6 +21,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   bool isLoading = true;
   Map? selectedItem;
   List items = [];
+  TodoService service = TodoService();
 
   @override
   void initState() {
@@ -83,7 +84,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
 
   Future<void> deleteById(String id) async {
     // delete item
-    final isSuccess = await TodoService.deleteById(id);
+    final isSuccess = await service.deleteById(id);
     //remove item from list
     if (isSuccess) {
       final filtered = items.where((element) => element['_id'] != id).toList();
@@ -100,7 +101,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
   }
 
   Future<void> fetchTodo() async {
-    final response = await TodoService.fetchTodo();
+    final response = await service.fetchTodo();
     if (response != null) {
       setState(() {
         items = response;

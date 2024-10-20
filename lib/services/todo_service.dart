@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:todo/utils/app_strings.dart';
 
 class DioClient {
-  final dio = Dio(BaseOptions(baseUrl: "https://api.nstack.in"));
+  final dio = Dio(BaseOptions(baseUrl: AppStrings.baseURL));
 
   DioClient() {
     addInterceptor(LogInterceptor(responseBody: true, requestBody: true));
@@ -17,7 +19,7 @@ class AuthInterceptor extends Interceptor {
   void onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     options.headers.addAll({"token-token": "value value"});
-    print(options.headers);
+    debugPrint("${options.headers}");
     handler.next(options);
   }
 }
@@ -25,10 +27,10 @@ class AuthInterceptor extends Interceptor {
 class PrintResponsePropertiesInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    print("***************************");
-    print(response.statusCode);
-    print(response.realUri);
-    print("***************************");
+    debugPrint("***************************");
+    debugPrint("${response.statusCode}");
+    debugPrint("${response.realUri}");
+    debugPrint("***************************");
     super.onResponse(response, handler);
   }
 }
@@ -36,14 +38,14 @@ class PrintResponsePropertiesInterceptor extends Interceptor {
 class TodoService {
   static DioClient fInterceptor = DioClient();
 
-  static Future<bool> deleteById(String id) async {
+  Future<bool> deleteById(String id) async {
     final response =
-        await fInterceptor.dio.delete("https://api.nstack.in/v1/todos/$id");
+        await fInterceptor.dio.delete(AppStrings.apiDeleteLink + id);
     return response.statusCode == 200;
   }
 
-  static Future<List?> fetchTodo() async {
-    final response = await fInterceptor.dio.get("/v1/todos?page=1&limit=20");
+  Future<List?> fetchTodo() async {
+    final response = await fInterceptor.dio.get(AppStrings.apiFetchLink);
     if (response.statusCode == 200) {
       final result = response.data['items'] as List;
       return result;
@@ -52,18 +54,18 @@ class TodoService {
     }
   }
 
-  static Future<bool> updateTodo(String id, Map body) async {
+  Future<bool> updateTodo(String id, Map body) async {
     final response = await fInterceptor.dio.put(
-      "https://api.nstack.in/v1/todos/$id",
+      AppStrings.apiUpdateLink + id,
       data: body,
       queryParameters: {'Content-Type': 'application/json'},
     );
     return response.statusCode == 200;
   }
 
-  static Future<bool> addTodo(Map body) async {
+  Future<bool> addTodo(Map body) async {
     final response = await fInterceptor.dio.post(
-      "https://api.nstack.in/v1/todos?page=1&limit=20",
+      AppStrings.apiPostLink,
       data: body,
       queryParameters: {'Content-Type': 'application/json'},
     );
