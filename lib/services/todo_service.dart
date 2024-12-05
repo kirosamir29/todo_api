@@ -41,12 +41,12 @@ class TodoService {
 
   Future<bool> deleteById(String id) async {
     final response =
-        await fInterceptor.dio.delete(AppStrings.apiDeleteLink + id);
+        await fInterceptor.dio.delete(AppStrings.apiUpdateLink + id);
     return response.statusCode == 200;
   }
 
   Future<List?> fetchTodo() async {
-    final response = await fInterceptor.dio.get(AppStrings.apiFetchLink);
+    final response = await fInterceptor.dio.get("${AppStrings.apiTodoLink}page=1&limit=20");
     if (response.statusCode == 200) {
       final result = response.data['items'] as List;
       return result;
@@ -66,7 +66,7 @@ class TodoService {
 
   Future<bool> addTodo(Map body) async {
     final response = await fInterceptor.dio.post(
-      AppStrings.apiPostLink,
+      AppStrings.apiTodoLink,
       data: body,
       queryParameters: {'Content-Type': 'application/json'},
     );
