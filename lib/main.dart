@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,26 +24,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale locale = Locale("en");
+  Locale _deviceLocale = PlatformDispatcher.instance.locale;
 
   @override
   void initState() {
     super.initState();
-    locale = widget.savedLocale ??
-        Locale('en'); // Default to English if no saved locale
+
+    _deviceLocale = widget.savedLocale ?? PlatformDispatcher.instance.locale;
   }
 
   void changeLanguage(Locale locale) async {
     setState(() {
-      this.locale = locale;
+      _deviceLocale = locale;
     });
-    await saveLocale(locale); // Save the locale when changed
+    await saveLocale(locale);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      locale: locale,
+      locale: _deviceLocale,
       supportedLocales: const [Locale('ar'), Locale('en')],
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -57,12 +58,12 @@ class _MyAppState extends State<MyApp> {
             return deviceLocale;
           }
         }
-        return locale;
+        return _deviceLocale;
       },
       home: TodoListScreen(
         changeLangCallback: () {
           setState(() {
-            if (locale.languageCode == "ar") {
+            if (_deviceLocale.languageCode == "ar") {
               changeLanguage(const Locale('en'));
             } else {
               changeLanguage(const Locale('ar'));
@@ -76,13 +77,11 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-// Save selected locale to SharedPreferences
 Future<void> saveLocale(Locale locale) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('locale', locale.languageCode);
 }
 
-// Load saved locale from SharedPreferences
 Future<Locale?> getSavedLocale() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? languageCode = prefs.getString('locale');
